@@ -200,6 +200,7 @@ const Navbar = () => {
                         boxShadow: "none",
                         border: "1px solid #6F66F8",
                       },
+                      display: { xs: "none", sm: "flex", md: "flex" },
                     }}
                   >
                     Sign up
