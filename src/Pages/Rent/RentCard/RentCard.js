@@ -20,13 +20,30 @@ const RentCard = ({ property }) => {
     property;
 
   return (
-    <Grid item xs={12} sm={6} md={4} lg={4}>
+    <Grid
+      item
+      xs={12}
+      sm={6}
+      md={4}
+      lg={4}
+      sx={{
+        "& .MuiCard-root": {
+          marginX: "auto",
+        },
+      }}
+    >
       <Card
         sx={{
           maxWidth: 345,
           overflow: "unset",
           borderRadius: "10px",
           boxShadow: "0px 0px 0px 1px rgba(214,214,214,0.75)",
+          transition: "all 0.5s",
+          cursor: "pointer",
+          ":hover": {
+            transform: "scale(1.01)",
+            transition: "all 0.5s",
+          },
         }}
       >
         <Box position={"relative"}>

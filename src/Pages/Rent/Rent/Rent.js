@@ -31,14 +31,7 @@ const Rent = () => {
     );
     setFilterRent(searchItem);
   };
-  // if (isLoading) {
-  //   return (
-  //     <Box sx={{ pt: 0.5 }}>
-  //       <Skeleton />
-  //       <Skeleton width="60%" />
-  //     </Box>
-  //   );
-  // }
+
   return (
     <Box>
       <Container maxWidth="lg" sx={{ paddingY: "2rem" }}>
@@ -95,7 +88,19 @@ const Rent = () => {
             sx={{ marginY: "1rem", marginX: "auto" }}
           >
             {[...Array(6).keys()].map((n) => (
-              <Grid key={Math.random()} item xs={12} sm={6} md={4} lg={4}>
+              <Grid
+                key={Math.random()}
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={4}
+                sx={{
+                  "& .MuiCard-root": {
+                    marginX: "auto",
+                  },
+                }}
+              >
                 <Loader />
               </Grid>
             ))}

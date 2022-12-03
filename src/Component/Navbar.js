@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -9,15 +9,25 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import { Stack } from "@mui/material";
+import { Avatar, Stack, Tooltip } from "@mui/material";
 import NightShelterRoundedIcon from "@mui/icons-material/NightShelterRounded";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../Context/AuthProvider";
 
 // nav item
 const pages = ["Rent", "Buy", "Sell", "Manage Property", "Resource"];
 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const { user, userSignOut } = useContext(AuthContext);
 
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -40,22 +50,23 @@ const Navbar = () => {
               color: "secondary.main",
             }}
           />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            Estatery
-          </Typography>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              sx={{
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                fontWeight: 700,
+                color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              Estatery
+            </Typography>
+          </Link>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -104,24 +115,25 @@ const Navbar = () => {
               color: "secondary.main",
             }}
           />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            Estatery
-          </Typography>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <Typography
+              variant="h5"
+              noWrap
+              component="a"
+              sx={{
+                mr: 2,
+                display: { xs: "flex", md: "none" },
+                flexGrow: 1,
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              Estatery
+            </Typography>
+          </Link>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
@@ -149,46 +161,85 @@ const Navbar = () => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Stack spacing={2} direction="row">
-              <Button
-                variant="outlined"
-                color="primary"
-                sx={{
-                  color: "secondary.contrastText",
-                  fontWeight: "bold",
-                  borderColor: "secondary.main",
-                  borderRadius: "7px",
-                  textTransform: "inherit",
-                  ":hover": {
-                    backgroundColor: "secondary.main",
-                    borderColor: "secondary.main",
-                    color: "#fff",
-                  },
-                }}
-              >
-                Login
-              </Button>
-              <Button
-                variant="contained"
-                sx={{
-                  fontWeight: "bold",
-                  backgroundColor: "secondary.main",
-                  color: "#fff",
-                  borderRadius: "7px",
-                  textTransform: "inherit",
-                  boxShadow: "none",
-                  border: "1px solid transparent",
-                  ":hover": {
-                    backgroundColor: "transparent",
-                    color: "secondary.main",
-                    boxShadow: "none",
-                    border: "1px solid #6F66F8",
-                  },
-                }}
-              >
-                Sign up
-              </Button>
-            </Stack>
+            {!user?.uid ? (
+              <Stack spacing={2} direction="row">
+                <Link to="login" style={{ textDecoration: "none" }}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    sx={{
+                      color: "secondary.contrastText",
+                      fontWeight: "bold",
+                      borderColor: "secondary.main",
+                      borderRadius: "7px",
+                      textTransform: "inherit",
+                      ":hover": {
+                        backgroundColor: "secondary.main",
+                        borderColor: "secondary.main",
+                        color: "#fff",
+                      },
+                    }}
+                  >
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/signup" style={{ textDecoration: "none" }}>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      fontWeight: "bold",
+                      backgroundColor: "secondary.main",
+                      color: "#fff",
+                      borderRadius: "7px",
+                      textTransform: "inherit",
+                      boxShadow: "none",
+                      border: "1px solid transparent",
+                      ":hover": {
+                        backgroundColor: "transparent",
+                        color: "secondary.main",
+                        boxShadow: "none",
+                        border: "1px solid #6F66F8",
+                      },
+                    }}
+                  >
+                    Sign up
+                  </Button>
+                </Link>
+              </Stack>
+            ) : (
+              <>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar src="/broken-image.jpg" />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography
+                      textAlign="center"
+                      onClick={() => userSignOut()}
+                    >
+                      Log out
+                    </Typography>
+                  </MenuItem>
+                </Menu>
+              </>
+            )}
           </Box>
         </Toolbar>
       </Container>
