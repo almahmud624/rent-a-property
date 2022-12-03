@@ -1,0 +1,13 @@
+.ribbon::before {
+  top: 80%;
+  right: 89%;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  position: absolute;
+  z-index: -1;
+  content: "";
+  display: block;
+  border: 5px solid #584ee2;
+  box-sizing: content-box;
+  transform: rotate(45deg);
+}
